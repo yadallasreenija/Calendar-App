@@ -344,13 +344,15 @@ getNextOccurrence(event, fromDate)
 
 ### Automated Deployment (GitHub Actions)
 
-The project uses GitHub Actions for continuous deployment:
+The workflow at `.github/workflows/deploy.yml` runs for pull requests and pushes to `main`:
 
-1. **Trigger**: Push to `main` branch
-2. **Build**: Installs dependencies and builds production bundle
-3. **Deploy**: Publishes to GitHub Pages automatically
+1. **Install**: Runs `npm ci` in `calender-app` to install the exact versions in the lockfile.
+2. **Validate**: Runs ESLint and creates a production build. Pull requests stop here and do not deploy.
+3. **Deploy**: On pushes to `main`, uploads the built site to GitHub Pages using the Pages deployment actions.
 
-**Workflow File:** `.github/workflows/deploy.yml`
+To enable deployment, configure the repository's **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. The workflow can also be started manually with **Actions → CI and Deploy to GitHub Pages → Run workflow**.
+
+There is currently no automated test script in `calender-app/package.json`; the CI checks are linting and a production build.
 
 ### Manual Deployment
 
