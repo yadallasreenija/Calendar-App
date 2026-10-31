@@ -344,12 +344,14 @@ getNextOccurrence(event, fromDate)
 
 ### Automated Deployment (GitHub Actions)
 
-Two GitHub Actions workflows automate validation and deployment:
+Four GitHub Actions workflows automate validation, security checks, and deployment:
 
 - **CI** (`.github/workflows/ci.yml`): Runs on pull requests and pushes to `main`. It installs the locked dependencies with `npm ci`, runs ESLint, then builds the app so issues are caught before merging.
 - **Deploy** (`.github/workflows/deploy.yml`): Runs on pushes to `main` and manually from the Actions tab. It builds the app and publishes the result to GitHub Pages. Pull requests never deploy.
+- **CodeQL** (`.github/workflows/codeql.yml`): Scans JavaScript/TypeScript code on pushes, pull requests, and weekly; findings appear in GitHub code scanning.
+- **Dependency Audit** (`.github/workflows/dependency-audit.yml`): Runs `npm audit` when dependency manifests change, weekly, or manually. It fails when high or critical vulnerabilities are found.
 
-To enable deployment, configure the repository's **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Both workflows can be started manually from the Actions tab using **Run workflow**.
+To enable deployment, configure the repository's **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Each workflow can be started manually from the Actions tab using **Run workflow**.
 
 There is currently no automated test script in `calender-app/package.json`; the CI checks are linting and a production build.
 
